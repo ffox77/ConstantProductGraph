@@ -7,6 +7,7 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
+  ReferenceDot,
 } from "recharts";
 import { Card } from "@/components/ui/card";
 import { generateDataPoints, findClosestPoint } from "@/lib/math";
@@ -24,7 +25,7 @@ export function ConstantProductChart({
   maxX,
   points,
 }: ConstantProductChartProps) {
-  const [currentPoint, setCurrentPoint] = useState<{x: number; y: number}>({ x: 10, y: k/10 });
+  const [currentPoint, setCurrentPoint] = useState<{x: number; y: number}>({ x: 100, y: 100 });
   const chartRef = useRef<HTMLDivElement>(null);
   const data = generateDataPoints(k, minX, maxX, points);
 
@@ -47,7 +48,7 @@ export function ConstantProductChart({
           x * y = {k} (constant k)
         </p>
       </div>
-      
+
       <div className="mb-4 grid grid-cols-2 gap-4">
         <div className="text-center">
           <p className="text-sm text-muted-foreground">Reserve X</p>
@@ -93,6 +94,13 @@ export function ConstantProductChart({
               stroke="hsl(var(--primary))"
               dot={false}
               activeDot={{ r: 8 }}
+            />
+            <ReferenceDot
+              x={100}
+              y={100}
+              r={8}
+              fill="hsl(var(--primary))"
+              stroke="white"
             />
           </LineChart>
         </ResponsiveContainer>

@@ -18,9 +18,9 @@ export default function Home() {
         </Card>
 
         <ConstantProductChart
-          k={1000}
-          minX={1}
-          maxX={100}
+          k={10000}
+          minX={10}
+          maxX={1000}
           points={1000}
         />
       </div>
