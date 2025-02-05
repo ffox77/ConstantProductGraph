@@ -13,21 +13,23 @@ import { Card } from "@/components/ui/card";
 import { generateDataPoints, findClosestPoint } from "@/lib/math";
 
 interface ConstantProductChartProps {
-  k: number;
+  reserveX: number;
+  reserveY: number;
   minX: number;
   maxX: number;
   points: number;
 }
 
 export function ConstantProductChart({
-  k,
+  reserveX,
+  reserveY,
   minX,
   maxX,
   points,
 }: ConstantProductChartProps) {
-  const [currentPoint, setCurrentPoint] = useState<{x: number; y: number}>({ x: 100, y: 100 });
+  const [currentPoint, setCurrentPoint] = useState<{x: number; y: number}>({ x: reserveX, y: reserveY });
   const chartRef = useRef<HTMLDivElement>(null);
-  const data = generateDataPoints(k, minX, maxX, points);
+  const data = generateDataPoints(reserveX, reserveY, minX, maxX, points);
 
   const handleMouseMove = (e: any) => {
     if (!chartRef.current || !e.activePayload) return;
@@ -39,19 +41,19 @@ export function ConstantProductChart({
   return (
     <Card className="p-6">
       <div className="mb-4">
-        <h2 className="text-2xl font-bold mb-2">Constant Product Formula</h2>
+        <h2 className="text-2xl font-bold mb-2">AMM Price Impact</h2>
         <p className="text-muted-foreground">
-          x * y = {k} (constant k)
+          y = (ReserveY * x) / (ReserveX + x)
         </p>
       </div>
 
       <div className="mb-4 grid grid-cols-2 gap-4">
         <div className="text-center">
-          <p className="text-sm text-muted-foreground">Reserve X</p>
+          <p className="text-sm text-muted-foreground">Token X Amount</p>
           <p className="text-xl font-semibold">{currentPoint.x.toFixed(2)}</p>
         </div>
         <div className="text-center">
-          <p className="text-sm text-muted-foreground">Reserve Y</p>
+          <p className="text-sm text-muted-foreground">Token Y Price</p>
           <p className="text-xl font-semibold">{currentPoint.y.toFixed(2)}</p>
         </div>
       </div>
@@ -66,20 +68,20 @@ export function ConstantProductChart({
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis 
               dataKey="x" 
-              label={{ value: 'Reserve X', position: 'bottom' }}
-              domain={[0, 200]}  
+              label={{ value: 'Token X Amount', position: 'bottom' }}
+              domain={[0, maxX]}
             />
             <YAxis 
-              label={{ value: 'Reserve Y', angle: -90, position: 'insideLeft' }}
-              domain={[0, 200]}  
+              label={{ value: 'Token Y Price', angle: -90, position: 'insideLeft' }}
+              domain={[0, Math.max(reserveY * 1.2, ...data.map(d => d.y))]}
             />
             <Tooltip
               content={({ active, payload }) => {
                 if (active && payload && payload.length) {
                   return (
                     <div className="bg-background border rounded p-2">
-                      <p className="text-sm">X: {payload[0].payload.x.toFixed(2)}</p>
-                      <p className="text-sm">Y: {payload[0].payload.y.toFixed(2)}</p>
+                      <p className="text-sm">Amount: {payload[0].payload.x.toFixed(2)}</p>
+                      <p className="text-sm">Price: {payload[0].payload.y.toFixed(2)}</p>
                     </div>
                   );
                 }
@@ -94,10 +96,10 @@ export function ConstantProductChart({
               activeDot={{ r: 8 }}
             />
             <ReferenceDot
-              x={100}
-              y={100}
+              x={reserveX}
+              y={reserveY}
               r={8}
-              fill="red"  
+              fill="red"
               stroke="white"
               strokeWidth={3}
             />

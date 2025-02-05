@@ -8,19 +8,21 @@ export default function Home() {
         <Card className="mb-8">
           <CardContent className="pt-6">
             <h1 className="text-3xl font-bold mb-4">
-              Constant Product Market Maker
+              AMM Price Impact Visualization
             </h1>
             <p className="text-muted-foreground">
-              This visualization demonstrates how liquidity pools work using the constant product formula.
-              Click and drag along the curve to see how the reserves of tokens X and Y change while maintaining their product constant.
+              This visualization demonstrates how AMM prices change based on trade size.
+              Move your cursor along the curve to see how the price of Token Y changes
+              as the amount of Token X varies.
             </p>
           </CardContent>
         </Card>
 
         <ConstantProductChart
-          k={10000}
-          minX={10}
-          maxX={1000}
+          reserveX={100}
+          reserveY={100}
+          minX={1}
+          maxX={500}
           points={1000}
         />
       </div>

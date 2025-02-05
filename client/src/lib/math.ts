@@ -1,18 +1,18 @@
-export function calculateConstantProduct(k: number, x: number): number {
-  return k / x;
+export function calculateConstantProduct(reserveY: number, reserveX: number, x: number): number {
+  return (reserveY * x) / (reserveX + x);
 }
 
-export function generateDataPoints(k: number, minX: number, maxX: number, points: number): Array<{x: number; y: number}> {
+export function generateDataPoints(reserveX: number, reserveY: number, minX: number, maxX: number, points: number): Array<{x: number; y: number}> {
   const data: Array<{x: number; y: number}> = [];
   const step = (maxX - minX) / points;
-  
+
   for (let x = minX; x <= maxX; x += step) {
     data.push({
       x,
-      y: calculateConstantProduct(k, x)
+      y: calculateConstantProduct(reserveY, reserveX, x)
     });
   }
-  
+
   return data;
 }
 
