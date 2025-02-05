@@ -63,6 +63,14 @@ export function ConstantProductChart({
             margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
             onMouseMove={handleMouseMove}
           >
+            <ReferenceDot
+              x={100}
+              y={100}
+              r={8}
+              fill="hsl(var(--primary))"
+              stroke="white"
+              strokeWidth={3}
+            />
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis 
               dataKey="x" 
@@ -90,16 +98,6 @@ export function ConstantProductChart({
               stroke="hsl(var(--primary))"
               dot={false}
               activeDot={{ r: 8 }}
-            />
-            {/* Reference point for initial position */}
-            <ReferenceDot
-              x={100}
-              y={100}
-              r={16}
-              fill="hsl(var(--primary))"
-              stroke="white"
-              strokeWidth={2}
-              zIndex={10}
             />
           </LineChart>
         </ResponsiveContainer>
