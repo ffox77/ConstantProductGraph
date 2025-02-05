@@ -63,21 +63,15 @@ export function ConstantProductChart({
             margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
             onMouseMove={handleMouseMove}
           >
-            <ReferenceDot
-              x={100}
-              y={100}
-              r={8}
-              fill="hsl(var(--primary))"
-              stroke="white"
-              strokeWidth={3}
-            />
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis 
               dataKey="x" 
               label={{ value: 'Reserve X', position: 'bottom' }}
+              domain={[0, 200]}  
             />
             <YAxis 
               label={{ value: 'Reserve Y', angle: -90, position: 'insideLeft' }}
+              domain={[0, 200]}  
             />
             <Tooltip
               content={({ active, payload }) => {
@@ -98,6 +92,14 @@ export function ConstantProductChart({
               stroke="hsl(var(--primary))"
               dot={false}
               activeDot={{ r: 8 }}
+            />
+            <ReferenceDot
+              x={100}
+              y={100}
+              r={8}
+              fill="red"  
+              stroke="white"
+              strokeWidth={3}
             />
           </LineChart>
         </ResponsiveContainer>
