@@ -11,16 +11,16 @@ export default function Home() {
               Constant Product Market Maker
             </h1>
             <p className="text-muted-foreground">
-              This visualization demonstrates how liquidity pools work using a modified constant product formula.
-              The curve shows the relationship Y = ReserveY - K/(ReserveX + X), where K is the constant product.
+              This visualization demonstrates how liquidity pools work using the constant product formula.
+              Click and drag along the curve to see how the reserves of tokens X and Y change while maintaining their product constant.
             </p>
           </CardContent>
         </Card>
 
         <ConstantProductChart
           k={10000}
-          minX={0}
-          maxX={200}
+          minX={10}
+          maxX={1000}
           points={1000}
         />
       </div>
