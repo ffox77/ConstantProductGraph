@@ -30,14 +30,10 @@ export function ConstantProductChart({
   const data = generateDataPoints(k, minX, maxX, points);
 
   const handleMouseMove = (e: any) => {
-    if (!chartRef.current || !e.activeCoordinate) return;
+    if (!chartRef.current || !e.activePayload) return;
 
-    const chartBounds = chartRef.current.getBoundingClientRect();
-    const mouseX = e.activeCoordinate.x;
-    const mouseY = e.activeCoordinate.y;
-
-    const closest = findClosestPoint(data, mouseX, mouseY);
-    setCurrentPoint(closest);
+    const point = e.activePayload[0].payload;
+    setCurrentPoint({ x: point.x, y: point.y });
   };
 
   return (
@@ -88,19 +84,20 @@ export function ConstantProductChart({
                 return null;
               }}
             />
-            <Line
-              type="monotone"
-              dataKey="y"
-              stroke="hsl(var(--primary))"
-              dot={false}
-              activeDot={{ r: 8 }}
-            />
             <ReferenceDot
               x={100}
               y={100}
               r={8}
               fill="hsl(var(--primary))"
               stroke="white"
+              strokeWidth={2}
+            />
+            <Line
+              type="monotone"
+              dataKey="y"
+              stroke="hsl(var(--primary))"
+              dot={false}
+              activeDot={{ r: 8 }}
             />
           </LineChart>
         </ResponsiveContainer>
