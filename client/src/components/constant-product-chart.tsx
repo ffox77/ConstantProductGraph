@@ -25,9 +25,11 @@ export function ConstantProductChart({
   maxX,
   points,
 }: ConstantProductChartProps) {
-  const [currentPoint, setCurrentPoint] = useState<{x: number; y: number}>({ x: 100, y: 100 });
+  const reserveX = 100;
+  const reserveY = 100;
+  const [currentPoint, setCurrentPoint] = useState<{x: number; y: number}>({ x: reserveX, y: reserveY });
   const chartRef = useRef<HTMLDivElement>(null);
-  const data = generateDataPoints(k, minX, maxX, points);
+  const data = generateDataPoints(k, minX, maxX, points, reserveX, reserveY);
 
   const handleMouseMove = (e: any) => {
     if (!chartRef.current || !e.activePayload) return;
@@ -41,7 +43,7 @@ export function ConstantProductChart({
       <div className="mb-4">
         <h2 className="text-2xl font-bold mb-2">Constant Product Formula</h2>
         <p className="text-muted-foreground">
-          x * y = {k} (constant k)
+          Y = {reserveY} - {k}/(X + {reserveX})
         </p>
       </div>
 
@@ -66,12 +68,12 @@ export function ConstantProductChart({
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis 
               dataKey="x" 
-              label={{ value: 'Reserve X', position: 'bottom' }}
-              domain={[0, 200]}  
+              label={{ value: 'X Amount', position: 'bottom' }}
+              domain={[0, 200]}
             />
             <YAxis 
-              label={{ value: 'Reserve Y', angle: -90, position: 'insideLeft' }}
-              domain={[0, 200]}  
+              label={{ value: 'Y Amount', angle: -90, position: 'insideLeft' }}
+              domain={[0, 200]}
             />
             <Tooltip
               content={({ active, payload }) => {
@@ -94,10 +96,10 @@ export function ConstantProductChart({
               activeDot={{ r: 8 }}
             />
             <ReferenceDot
-              x={100}
-              y={100}
+              x={reserveX}
+              y={reserveY}
               r={8}
-              fill="red"  
+              fill="red"
               stroke="white"
               strokeWidth={3}
             />
