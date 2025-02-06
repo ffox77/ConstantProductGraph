@@ -10,6 +10,8 @@ import {
   ReferenceDot,
 } from "recharts";
 import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { generateDataPoints, findClosestPoint } from "@/lib/math";
 
 interface ConstantProductChartProps {
@@ -26,15 +28,20 @@ export function ConstantProductChart({
   points,
 }: ConstantProductChartProps) {
   const [currentPoint, setCurrentPoint] = useState<{x: number; y: number}>({ x: 100, y: 100 });
+  const [amountIn, setAmountIn] = useState<number>(50);
   const chartRef = useRef<HTMLDivElement>(null);
   const data = generateDataPoints(k, minX, maxX, points);
 
   const handleMouseMove = (e: any) => {
     if (!chartRef.current || !e.activePayload) return;
-
     const point = e.activePayload[0].payload;
     setCurrentPoint({ x: point.x, y: point.y });
   };
+
+  // Calculate dynamic point Y value
+  const reserveX = 100;
+  const reserveY = 100;
+  const dynamicY = reserveY - (reserveX * reserveY) / (reserveX + amountIn);
 
   return (
     <Card className="p-6">
@@ -45,7 +52,18 @@ export function ConstantProductChart({
         </p>
       </div>
 
-      <div className="mb-4 grid grid-cols-2 gap-4">
+      <div className="mb-4">
+        <Label htmlFor="amountIn">Amount In</Label>
+        <Input
+          id="amountIn"
+          type="number"
+          value={amountIn}
+          onChange={(e) => setAmountIn(Number(e.target.value))}
+          className="w-32"
+        />
+      </div>
+
+      <div className="mb-4 grid grid-cols-3 gap-4">
         <div className="text-center">
           <p className="text-sm text-muted-foreground">Reserve X</p>
           <p className="text-xl font-semibold">{currentPoint.x.toFixed(2)}</p>
@@ -53,6 +71,10 @@ export function ConstantProductChart({
         <div className="text-center">
           <p className="text-sm text-muted-foreground">Reserve Y</p>
           <p className="text-xl font-semibold">{currentPoint.y.toFixed(2)}</p>
+        </div>
+        <div className="text-center">
+          <p className="text-sm text-muted-foreground">Output Amount</p>
+          <p className="text-xl font-semibold">{dynamicY.toFixed(2)}</p>
         </div>
       </div>
 
@@ -93,11 +115,21 @@ export function ConstantProductChart({
               dot={false}
               activeDot={{ r: 8 }}
             />
+            {/* Fixed reference point */}
             <ReferenceDot
               x={100}
               y={100}
               r={8}
               fill="red"  
+              stroke="white"
+              strokeWidth={3}
+            />
+            {/* Dynamic point based on Amount In */}
+            <ReferenceDot
+              x={amountIn}
+              y={dynamicY}
+              r={8}
+              fill="blue"  
               stroke="white"
               strokeWidth={3}
             />
